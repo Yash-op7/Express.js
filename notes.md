@@ -162,3 +162,21 @@ http://localhost:3000/api/items/123/update: The URL where your API is hosted, in
 
 
 # authentication
+- see the auth code signup login
+
+
+# jwt
+- only for authorization
+- this is making sure that hte user that has sent the request to your server is the same user which logged and was authenticated as a legitimate user.
+- the way this is usually done is by sessions, for ex you have a session id that you send down in the cookies of the browser and then every time the client makes your request they send that session id up to the server and the server checks its memory and finds what user has that session id, it finds that user and then it does the authorization to make sure the uesr has access but in jwt instead of using cookeies it uses a json web token to do this authorization.
+![alt text](image-10.png)
+
+- in jwt when the user logs in successfully, the server instead of storing a session id, it serializes the user's information into a JWT and signs it with its secret key and doesn't stores anything in the server (because everythign about the client is encoded and serialized in the jwt, so when the client makes a request with its jwt the server can just process the request to check if its valid instead of storing anythgin in its memory which is less reliable) and returns it to the client, it signs it so that in the future it can detect if the client has tampered with the key
+- on the client side when they log in successfully and receive a jwt they can store it however they like and use it to make future requests, mostly the client stores the jwt using cookie storage
+- the main difference between jwt and session is that with session the id token is stored in that particular server's memory and the server has to perform a lookup, but in jwt the token is stored on the client side so it can use the same jwt on multiple servers
+- ![alt text](image-11.png)
+
+implementation
+- to get a secret access token:
+`require(crypto).randomBytes(64).toString('hex')`
+- run this twice to get 2 tokens one for access and one for refresh
