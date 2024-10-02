@@ -11,15 +11,25 @@ router.get('/new', (req, res) => {
 
 router.post('/', (req, res) => {
     let data = req.body;
-    // do somethign with tthe data
-    res.send('data received');
+    console.log(data);
+    res.send(data);
 })
 
-router.get('/:id/:action', (req, res) => {
-    const id = req.params.id;
-    const action = req.params.action;
-    // res.send('id', id, 'action', action);
-    res.send(`id: ${id}, action: ${action}`);
+router.get('/:id', (req, res) => {
+    console.log(`the user is ${req.user}`);
+    res.send(`data received is id = ${req.params.id}`);
 })
+const users = ['bob', 'tom', 'bill'];
+router.param('id', (req, res, next, id) => {
+    console.log(id);
+    req.user = users[id-1];
+    next();
+})
+
+router.get('/birds/fly', (req,res) => {
+    res.send('birds are flying');
+});
+
+
 
 module.exports = router;
