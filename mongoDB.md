@@ -45,7 +45,7 @@ db.users.insertOne({name: "Kyle"})
 - another way to do this is to use $and and explicitly specify the conditions in an array: `db.users.find({ $and: [{age: 20}, {name: "Kyle"}] })`
 - this $and is not that useful since you can just do this inside the find, but you do need $or:
 `db.users.find({ $or: [{age: { $lte: 20 }}, {name: "Kyle"}] })`
-- $not: `db.users.find({ age: { not: { $lte:20 }}})`, special note is that $not also fetches objects where the specific key contains `null`
+- $not: `db.users.find({ age: { $not: { $lte:20 }}})`, special note is that $not also fetches objects where the specific key contains `null`
 - To inter-compare, that is compare between values within each object:
 `db.users.find({ $expr: { $gt: ["$debt", "$balance"] }}), debt and balance are keys, this returns all objects where the debt > balance
 - To query on the subobject's keys: db.users.find({ "address.street": "123 Main St" });
@@ -54,6 +54,7 @@ db.users.insertOne({name: "Kyle"})
 - db.users.findOne({ _id: ObjectId("342139dufhsd9...")}) // find by id
 
 # update queries
+- `db.users.update(find_condition, update_conditions)`
 - db.users.update() all the things that you passed to .find() work with update as well to select the documents to update
 - db.users.updateOne({age: 26}, { $set: { age: 27 }}); 
 - db.users.updateOne({ _id: ObjectId("342139dufhsd9...")}, { $set: {name: "New Name" }}) // update by id
@@ -67,3 +68,7 @@ db.users.insertOne({name: "Kyle"})
 - db.users.replaceOne({ age:30 }, new_obj), example: db.users.replaceOne({ age:30 }, { name: "John" })
 
 # delete
+- db.users.deleteOne({ name: "John" })
+- db.users.deleteMany({ age: { $exists: false} })
+
+# Mongoose
