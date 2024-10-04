@@ -34,4 +34,22 @@ db.users.insertOne({name: "Kyle"})
     ex: db.users.find({ name:"Kyle" }, { name:1, age:1 }), the fields not mentioned are defaulted to 0, except `_id` which is returned by default to override this behavior set it to 0 in the `project_object`.
     - to get all the fields except age: db.users.find({ name:"kyle" }, { age:0 });
 
-# complex query, 
+# complex queries
+- db.users.find({ name: { $eq: "Sally" }})
+- similar ones are $ne, $gt, $ngt, $lt, $nlt, $gte, $lte
+- db.users.find({ age: { $gte:20 }});
+- $in -> db.users.find({ name: { $in: ["Kyle", "Sally"] }});
+- similarly: $nin
+- $exists: db.users.find({ age: { $exists: false }}) // to find all the documents where age key doesn't exits.
+- db.users.find({ age: { $gte: 20, $lte: 40 }, name: "Sally" }) -> how this is executed is that its basically converted to sequential `AND` statement within each {}, so here, it first checks ƒor documents where age is gte 20 `AND` lte 40 then on these documents it takes an `AND` with name === "Sally"
+- another way to do this is to use $and and explicitly specify the conditions in an array: `db.users.find({ $and: [{age: 20}, {name: "Kyle"}] })`
+- this $and is not that useful since you can just do this inside the find, but you do need $or:
+`db.users.find({ $or: [{age: { $lte: 20 }}, {name: "Kyle"}] })`
+- $not: `db.users.find({ age: { not: { $lte:20 }}})`, special note is that $not also fetches objects where the specific key contains `null`
+- To inter-compare, that is compare between values within each object:
+`db.users.find({ $expr: { $gt: ["$debt", "$balance"] }}), debt and balance are keys, this returns all objects where the debt > balance
+- To query on the subobject's keys: db.users.find({ "address.street": "123 Main St" });
+- you can also use `findOne()`
+- db.users.countDocuments({ age: { $lte: 40 }});
+
+# updating
