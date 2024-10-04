@@ -33,7 +33,7 @@ async function findById() {
 
 async function createUser() {
   const user = new User({ name: "kyle", age: 40 });
-  user.save();
+  await user.save();
   // or
   // const user = await User.create({name:'john', age:20});
   console.log("created user.");
@@ -48,7 +48,6 @@ async function queries() {
   //   const user = await User.where("age").lte(20);
 
   // we can also chain these
-  //   const user = await User.where("age").gte(25).where('name').equals('kyle');
   //   const user = await User.where("age").gte(25).where('name').equals('kyle');
     // const user = await User.where("age").gte(25).lte(50).where('name').equals('kyle');
     

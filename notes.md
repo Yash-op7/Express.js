@@ -138,6 +138,27 @@ app.use(logger)
 ### methods learnt so far:
 see script2.js
 
+- findByIdAndUpdate:
+```js
+app.put('/users/:id', async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const updatedUser = await User.findByIdAndUpdate(userId, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!updatedUser) {
+      return res.status(404).send('User not found');
+    }
+
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
+```
+
 ### foreign keys
 ![alt text](image-7.png)
 this ref tells mongoose what model this objectId refers to:
@@ -180,3 +201,52 @@ implementation
 - to get a secret access token:
 `require(crypto).randomBytes(64).toString('hex')`
 - run this twice to get 2 tokens one for access and one for refresh
+
+# 2 hour yt complete backend project
+
+### - npm init -y
+## npm i
+> - express
+> - bcrypt
+> - cors
+> - cookie-parser
+> - helmet - for some sql injection prevention
+> - joi - for user data validation
+> - jwt
+> - mongoose
+> - nodemailer
+
+## `package.json`
+```json
+"scripts": {
+    "start": "node --env-file=.env index.js",
+    "dev": "node --env-file=.env --watch --trace-warnings index.js"
+}
+```
+- this removes the need for nodemon and dotenv
+
+> npm run dev
+
+## folder structure
+- controllers
+- middlewares
+- models
+- routers
+- utils
+- .gitignore
+
+## index.js
+```js
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use(cors());
+app.use(cookieParser());
+app.use(helmet());
+
+
+mongoose.connect(process.env.Mongo_uri).then(() => console.log('connected.')).catch((err) => console.error('Error connecting to mongodb',err));
+```
+
+## models
+### > userModel.js 
