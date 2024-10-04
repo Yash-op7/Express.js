@@ -51,5 +51,19 @@ db.users.insertOne({name: "Kyle"})
 - To query on the subobject's keys: db.users.find({ "address.street": "123 Main St" });
 - you can also use `findOne()`
 - db.users.countDocuments({ age: { $lte: 40 }});
+- db.users.findOne({ _id: ObjectId("342139dufhsd9...")}) // find by id
 
-# updating
+# update queries
+- db.users.update() all the things that you passed to .find() work with update as well to select the documents to update
+- db.users.updateOne({age: 26}, { $set: { age: 27 }}); 
+- db.users.updateOne({ _id: ObjectId("342139dufhsd9...")}, { $set: {name: "New Name" }}) // update by id
+- db.users.updateOne({ _id: ObjectId("342139dufhsd9...")}, { $inc: {age: 3 }}) // increment
+- db.users.updateOne({ _id: ObjectId("342139dufhsd9...")}, { $rename: {name: "firstName" }}) // rename
+- db.users.updateOne({ _id: ObjectId("342139dufhsd9...")}, { $unset: {name: "" }}) // unset
+- db.users.updateOne({ _id: ObjectId("342139dufhsd9...")}, { $push: {hobbies: "Swimming" }}) // push to array values
+- db.users.updateOne({ _id: ObjectId("342139dufhsd9...")}, { $pull: {hobbies: "Bowling" }}) // pull/remove/delete value from array values
+- you can remove values from array objects based on conditions by passing similar to find() conditions
+- db.users.updateMany({ address: { $exists: true }}, { $unset: { address: "" }})
+- db.users.replaceOne({ age:30 }, new_obj), example: db.users.replaceOne({ age:30 }, { name: "John" })
+
+# delete
